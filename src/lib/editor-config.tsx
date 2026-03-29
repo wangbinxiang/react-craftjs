@@ -183,6 +183,14 @@ const createProductHighlightCard = (index: number) => (
     custom={{ displayName: `Highlight ${index + 1}` }}
   >
     <Text
+      className="product-highlight-label"
+      fontSize="12"
+      fontWeight="700"
+      color={{ r: '120', g: '113', b: '108', a: '1' }}
+      margin={['0', '0', '16', '0']}
+      text={['Signature Benefit', 'Workflow Fit', 'Launch Ready'][index] ?? 'Benefit'}
+    />
+    <Text
       className="product-highlight-copy"
       fontSize="17"
       fontWeight="400"
@@ -219,6 +227,40 @@ const createProductSpecCard = (index: number) => (
     <Text
       className="product-spec-value"
       fontSize="24"
+      fontWeight="700"
+      color={{ r: '23', g: '32', b: '51', a: '1' }}
+      productField="specValue"
+      productIndex={index}
+      text={productDetail.specs[index]?.value ?? ''}
+    />
+  </Element>
+);
+
+const createProductMetaCard = (index: number) => (
+  <Element
+    canvas
+    is={Container}
+    className="product-meta-card"
+    background={{ r: 255, g: 252, b: 246, a: 0.9 }}
+    padding={['18', '18', '18', '18']}
+    radius={22}
+    width="100%"
+    height="auto"
+    custom={{ displayName: `Product Meta ${index + 1}` }}
+  >
+    <Text
+      className="product-meta-label"
+      fontSize="11"
+      fontWeight="700"
+      color={{ r: '120', g: '113', b: '108', a: '1' }}
+      margin={['0', '0', '8', '0']}
+      productField="specLabel"
+      productIndex={index}
+      text={productDetail.specs[index]?.label ?? ''}
+    />
+    <Text
+      className="product-meta-value"
+      fontSize="18"
       fontWeight="700"
       color={{ r: '23', g: '32', b: '51', a: '1' }}
       productField="specValue"
@@ -553,61 +595,146 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Product Copy' }}
         >
-          <Text
-            className="product-eyebrow"
-            fontSize="12"
-            fontWeight="700"
-            color={{ r: '107', g: '114', b: '128', a: '1' }}
-            margin={['0', '0', '14', '0']}
-            text="Product Detail"
-          />
-          <Text
-            className="product-title"
-            fontSize="68"
-            fontWeight="700"
-            color={{ r: '23', g: '32', b: '51', a: '1' }}
-            margin={['0', '0', '16', '0']}
-            productField="name"
-            text={productDetail.name}
-          />
-          <Text
-            className="product-tagline"
-            fontSize="17"
-            fontWeight="400"
-            color={{ r: '71', g: '85', b: '105', a: '1' }}
-            margin={['0', '0', '28', '0']}
-            productField="tagline"
-            text={productDetail.tagline}
-          />
+          {/* 左列按“标题 -> 摘要规格 -> CTA -> 支撑文案”组织，减少首屏信息被大留白打散。 */}
           <Element
             canvas
             is={Container}
-            className="product-actions"
-            flexDirection="row"
-            alignItems="center"
+            className="product-copy-intro"
             width="100%"
             height="auto"
             padding={['0', '0', '0', '0']}
+            margin={['0', '0', '22', '0']}
             background={{ r: 0, g: 0, b: 0, a: 0 }}
-            custom={{ displayName: 'Product Actions' }}
+            custom={{ displayName: 'Product Copy Intro' }}
           >
-            {/* Product Detail pages keep a dedicated CTA so preview and editor can share modal-only behavior without changing generic buttons. */}
-            <ProductCta
-              className="product-primary-action"
-              background={{ r: 23, g: 32, b: 51, a: 1 }}
-              buttonStyle="full"
-              color={{ r: 255, g: 254, b: 251, a: 1 }}
-              href={productDetail.ctaHref}
+            <Text
+              className="product-eyebrow"
+              fontSize="12"
+              fontWeight="700"
+              color={{ r: '107', g: '114', b: '128', a: '1' }}
+              margin={['0', '0', '14', '0']}
+              text="Flagship Product"
+            />
+            <Text
+              className="product-title"
+              fontSize="68"
+              fontWeight="700"
+              color={{ r: '23', g: '32', b: '51', a: '1' }}
+              margin={['0', '0', '16', '0']}
+              productField="name"
+              text={productDetail.name}
+            />
+            <Text
+              className="product-tagline"
+              fontSize="17"
+              fontWeight="400"
+              color={{ r: '71', g: '85', b: '105', a: '1' }}
               margin={['0', '0', '0', '0']}
-              productField="ctaLabel"
-              text={productDetail.ctaLabel}
-              textComponent={{
-                ...Text.craft.props,
-                fontSize: '13',
-                fontWeight: '700',
-                textAlign: 'center',
-                color: { r: 255, g: 254, b: 251, a: 1 },
-              }}
+              productField="tagline"
+              text={productDetail.tagline}
+            />
+          </Element>
+          {/* 这里直接复用规格字段做首屏摘要，不扩产品 schema，但让首屏更像完整商品页。 */}
+          <Element
+            canvas
+            is={Container}
+            className="product-copy-meta"
+            width="100%"
+            height="auto"
+            padding={['0', '0', '0', '0']}
+            margin={['0', '0', '24', '0']}
+            background={{ r: 0, g: 0, b: 0, a: 0 }}
+            custom={{ displayName: 'Product Copy Meta' }}
+          >
+            {[0, 1, 2].map((index) => createProductMetaCard(index))}
+          </Element>
+          {/* CTA 和交付提示放在同一区域，保证首屏在阅读和转化上都有明确落点。 */}
+          <Element
+            canvas
+            is={Container}
+            className="product-action-group"
+            width="100%"
+            height="auto"
+            padding={['0', '0', '0', '0']}
+            margin={['0', '0', '24', '0']}
+            background={{ r: 0, g: 0, b: 0, a: 0 }}
+            custom={{ displayName: 'Product Action Group' }}
+          >
+            {/* Keep the CTA isolated so editor behavior stays unchanged while the hero gains editorial support copy. */}
+            <Element
+              canvas
+              is={Container}
+              className="product-actions"
+              flexDirection="row"
+              alignItems="center"
+              width="100%"
+              height="auto"
+              padding={['0', '0', '0', '0']}
+              background={{ r: 0, g: 0, b: 0, a: 0 }}
+              custom={{ displayName: 'Product Actions' }}
+            >
+              {/* Product Detail pages keep a dedicated CTA so preview and editor can share modal-only behavior without changing generic buttons. */}
+              <ProductCta
+                className="product-primary-action"
+                background={{ r: 23, g: 32, b: 51, a: 1 }}
+                buttonStyle="full"
+                color={{ r: 255, g: 254, b: 251, a: 1 }}
+                href={productDetail.ctaHref}
+                margin={['0', '0', '0', '0']}
+                productField="ctaLabel"
+                text={productDetail.ctaLabel}
+                textComponent={{
+                  ...Text.craft.props,
+                  fontSize: '13',
+                  fontWeight: '700',
+                  textAlign: 'center',
+                  color: { r: 255, g: 254, b: 251, a: 1 },
+                }}
+              />
+            </Element>
+            <Text
+              className="product-action-note"
+              fontSize="14"
+              fontWeight="400"
+              color={{ r: '120', g: '113', b: '108', a: '1' }}
+              margin={['12', '0', '0', '0']}
+              text="Ships with launch-safe packaging, setup guidance, and a presentation-ready default layout."
+            />
+          </Element>
+          {/* This support cluster adds premium merchandising context without introducing new product schema fields. */}
+          <Element
+            canvas
+            is={Container}
+            className="product-hero-support"
+            width="100%"
+            height="auto"
+            padding={['20', '20', '20', '20']}
+            radius={24}
+            background={{ r: 255, g: 249, b: 240, a: 0.9 }}
+            custom={{ displayName: 'Product Hero Support' }}
+          >
+            <Text
+              className="product-hero-support-label"
+              fontSize="12"
+              fontWeight="700"
+              color={{ r: '120', g: '113', b: '108', a: '1' }}
+              margin={['0', '0', '12', '0']}
+              text="Built for focused launch work"
+            />
+            <Text
+              className="product-hero-support-title"
+              fontSize="24"
+              fontWeight="700"
+              color={{ r: '23', g: '32', b: '51', a: '1' }}
+              margin={['0', '0', '10', '0']}
+              text="A product surface that reads like a polished artifact, not a disposable accessory."
+            />
+            <Text
+              className="product-hero-support-copy"
+              fontSize="15"
+              fontWeight="400"
+              color={{ r: '87', g: '83', b: '78', a: '1' }}
+              text="Calibrated for sketch reviews, roadmap sessions, and fast demo handoffs, with a layout system that already feels presentation-ready."
             />
           </Element>
         </Element>
@@ -622,42 +749,204 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Product Media' }}
         >
-          <Image
-            alt={`${productDetail.name} product hero`}
-            className="product-hero-image"
-            height="420px"
-            productField="heroImage"
-            radius={30}
-            src={productDetail.heroImage}
-          />
+          {/* 右列把主图、价格和说明都收进同一个媒体框，视觉锚点会更集中。 */}
           <Element
             canvas
             is={Container}
-            className="product-price-card"
-            width="200px"
+            className="product-media-frame"
+            width="100%"
             height="auto"
-            padding={['18', '20', '18', '20']}
-            radius={24}
-            background={{ r: 15, g: 23, b: 42, a: 0.9 }}
-            custom={{ displayName: 'Product Price' }}
+            padding={['24', '24', '24', '24']}
+            radius={34}
+            background={{ r: 247, g: 241, b: 232, a: 0.78 }}
+            custom={{ displayName: 'Product Media Frame' }}
           >
-            <Text
-              className="product-price-label"
-              fontSize="12"
-              fontWeight="700"
-              color={{ r: '107', g: '114', b: '128', a: '1' }}
-              margin={['0', '0', '6', '0']}
-              text="Launch Price"
+            <Element
+              canvas
+              is={Container}
+              className="product-media-badge"
+              width="160px"
+              height="auto"
+              padding={['14', '16', '14', '16']}
+              radius={20}
+              background={{ r: 255, g: 252, b: 246, a: 0.92 }}
+              custom={{ displayName: 'Product Media Badge' }}
+            >
+              <Text
+                className="product-media-badge-label"
+                fontSize="11"
+                fontWeight="700"
+                color={{ r: '107', g: '114', b: '128', a: '1' }}
+                margin={['0', '0', '8', '0']}
+                text="Editor-ready"
+              />
+              <Text
+                className="product-media-badge-value"
+                fontSize="18"
+                fontWeight="700"
+                color={{ r: '23', g: '32', b: '51', a: '1' }}
+                text="Responsive product story"
+              />
+            </Element>
+            <Image
+              alt={`${productDetail.name} product hero`}
+              className="product-hero-image"
+              height="420px"
+              productField="heroImage"
+              radius={30}
+              src={productDetail.heroImage}
             />
-            <Text
-              className="product-price-value"
-              fontSize="32"
-              fontWeight="700"
-              color={{ r: '255', g: '255', b: '255', a: '1' }}
-              productField="price"
-              text={productDetail.price}
-            />
+            <Element
+              canvas
+              is={Container}
+              className="product-media-caption"
+              width="220px"
+              height="auto"
+              padding={['16', '18', '16', '18']}
+              radius={22}
+              background={{ r: 255, g: 252, b: 246, a: 0.92 }}
+              custom={{ displayName: 'Product Media Caption' }}
+            >
+              <Text
+                className="product-media-caption-label"
+                fontSize="11"
+                fontWeight="700"
+                color={{ r: '107', g: '114', b: '128', a: '1' }}
+                margin={['0', '0', '6', '0']}
+                text="Hero system"
+              />
+              <Text
+                className="product-media-caption-copy"
+                fontSize="15"
+                fontWeight="700"
+                color={{ r: '23', g: '32', b: '51', a: '1' }}
+                text="One frame tuned for review, demo, and launch storytelling."
+              />
+            </Element>
+            <Element
+              canvas
+              is={Container}
+              className="product-price-card"
+              width="200px"
+              height="auto"
+              padding={['18', '20', '18', '20']}
+              radius={24}
+              background={{ r: 15, g: 23, b: 42, a: 0.9 }}
+              custom={{ displayName: 'Product Price' }}
+            >
+              <Text
+                className="product-price-label"
+                fontSize="12"
+                fontWeight="700"
+                color={{ r: '107', g: '114', b: '128', a: '1' }}
+                margin={['0', '0', '6', '0']}
+                text="Launch Price"
+              />
+              <Text
+                className="product-price-value"
+                fontSize="32"
+                fontWeight="700"
+                color={{ r: '255', g: '255', b: '255', a: '1' }}
+                productField="price"
+                text={productDetail.price}
+              />
+            </Element>
           </Element>
+        </Element>
+      </Element>
+
+      {/* The trust strip creates a second rhythm under the hero without changing editable product data bindings. */}
+      <Element
+        canvas
+        is={Container}
+        className="product-trust-strip"
+        width="100%"
+        height="auto"
+        padding={['0', '0', '0', '0']}
+        margin={['0', '0', '24', '0']}
+        background={{ r: 0, g: 0, b: 0, a: 0 }}
+        custom={{ displayName: 'Product Trust Strip' }}
+      >
+        <Element
+          canvas
+          is={Container}
+          className="product-trust-item"
+          width="100%"
+          height="auto"
+          padding={['18', '20', '18', '20']}
+          radius={22}
+          background={{ r: 255, g: 252, b: 246, a: 0.82 }}
+          custom={{ displayName: 'Trust Item 1' }}
+        >
+          <Text
+            className="product-trust-label"
+            fontSize="11"
+            fontWeight="700"
+            color={{ r: '120', g: '113', b: '108', a: '1' }}
+            margin={['0', '0', '8', '0']}
+            text="Delivery"
+          />
+          <Text
+            className="product-trust-value"
+            fontSize="20"
+            fontWeight="700"
+            color={{ r: '23', g: '32', b: '51', a: '1' }}
+            text="Ships in five business days with launch-safe packaging."
+          />
+        </Element>
+        <Element
+          canvas
+          is={Container}
+          className="product-trust-item"
+          width="100%"
+          height="auto"
+          padding={['18', '20', '18', '20']}
+          radius={22}
+          background={{ r: 255, g: 252, b: 246, a: 0.82 }}
+          custom={{ displayName: 'Trust Item 2' }}
+        >
+          <Text
+            className="product-trust-label"
+            fontSize="11"
+            fontWeight="700"
+            color={{ r: '120', g: '113', b: '108', a: '1' }}
+            margin={['0', '0', '8', '0']}
+            text="Assurance"
+          />
+          <Text
+            className="product-trust-value"
+            fontSize="20"
+            fontWeight="700"
+            color={{ r: '23', g: '32', b: '51', a: '1' }}
+            text="Studio-grade finish, tuned for daily review cycles and live demos."
+          />
+        </Element>
+        <Element
+          canvas
+          is={Container}
+          className="product-trust-item"
+          width="100%"
+          height="auto"
+          padding={['18', '20', '18', '20']}
+          radius={22}
+          background={{ r: 255, g: 252, b: 246, a: 0.82 }}
+          custom={{ displayName: 'Trust Item 3' }}
+        >
+          <Text
+            className="product-trust-label"
+            fontSize="11"
+            fontWeight="700"
+            color={{ r: '120', g: '113', b: '108', a: '1' }}
+            margin={['0', '0', '8', '0']}
+            text="Ready State"
+          />
+          <Text
+            className="product-trust-value"
+            fontSize="20"
+            fontWeight="700"
+            color={{ r: '23', g: '32', b: '51', a: '1' }}
+            text="Composed to move from editor preview to stakeholder review without rework."
+          />
         </Element>
       </Element>
 
@@ -685,20 +974,39 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Highlights Heading' }}
         >
+          {/* 标题区拆成主标题和辅助说明两栏，让 section 自己就能建立节奏，不再只剩大标题压着卡片。 */}
+          <Element
+            canvas
+            is={Container}
+            className="product-section-heading-main"
+            width="100%"
+            height="auto"
+            padding={['0', '0', '0', '0']}
+            background={{ r: 0, g: 0, b: 0, a: 0 }}
+            custom={{ displayName: 'Highlights Heading Main' }}
+          >
+            <Text
+              className="product-section-label"
+              fontSize="12"
+              fontWeight="700"
+              color={{ r: '107', g: '114', b: '128', a: '1' }}
+              margin={['0', '0', '12', '0']}
+              text="Why it earns desk space"
+            />
+            <Text
+              className="product-section-title"
+              fontSize="40"
+              fontWeight="700"
+              color={{ r: '23', g: '32', b: '51', a: '1' }}
+              text="The standout qualities are framed like editorial callouts instead of generic feature blurbs."
+            />
+          </Element>
           <Text
-            className="product-section-label"
-            fontSize="12"
-            fontWeight="700"
-            color={{ r: '107', g: '114', b: '128', a: '1' }}
-            margin={['0', '0', '12', '0']}
-            text="Why Teams Choose It"
-          />
-          <Text
-            className="product-section-title"
-            fontSize="40"
-            fontWeight="700"
-            color={{ r: '23', g: '32', b: '51', a: '1' }}
-            text="Key benefits mapped directly from the product data source."
+            className="product-section-intro"
+            fontSize="15"
+            fontWeight="400"
+            color={{ r: '87', g: '83', b: '78', a: '1' }}
+            text="Each card is sized to read quickly at a glance, while the lead benefit gets enough space to feel like a headline rather than a bullet point."
           />
         </Element>
         <Element
@@ -738,20 +1046,39 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Specs Heading' }}
         >
+          {/* 规格区沿用同一 heading 结构，让整页从首屏到信息区保持统一的阅读网格。 */}
+          <Element
+            canvas
+            is={Container}
+            className="product-section-heading-main"
+            width="100%"
+            height="auto"
+            padding={['0', '0', '0', '0']}
+            background={{ r: 0, g: 0, b: 0, a: 0 }}
+            custom={{ displayName: 'Specs Heading Main' }}
+          >
+            <Text
+              className="product-section-label"
+              fontSize="12"
+              fontWeight="700"
+              color={{ r: '107', g: '114', b: '128', a: '1' }}
+              margin={['0', '0', '12', '0']}
+              text="Specification board"
+            />
+            <Text
+              className="product-section-title"
+              fontSize="40"
+              fontWeight="700"
+              color={{ r: '23', g: '32', b: '51', a: '1' }}
+              text="Core facts stay tightly structured so the page still scans like a premium hardware sheet."
+            />
+          </Element>
           <Text
-            className="product-section-label"
-            fontSize="12"
-            fontWeight="700"
-            color={{ r: '107', g: '114', b: '128', a: '1' }}
-            margin={['0', '0', '12', '0']}
-            text="Specifications"
-          />
-          <Text
-            className="product-section-title"
-            fontSize="40"
-            fontWeight="700"
-            color={{ r: '23', g: '32', b: '51', a: '1' }}
-            text="Structured facts that stay synchronized with the product data source."
+            className="product-section-intro"
+            fontSize="15"
+            fontWeight="400"
+            color={{ r: '87', g: '83', b: '78', a: '1' }}
+            text="The grid stays factual and compact so the product story still feels premium instead of collapsing into a generic spec dump."
           />
         </Element>
         <Element

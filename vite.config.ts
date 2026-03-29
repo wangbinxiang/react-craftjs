@@ -6,6 +6,9 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig(({ command }) => ({
   // Keep local dev rooted at / while emitting a bundle that can live under /examples/react/.
   base: command === 'build' ? '/examples/react/' : '/',
+  test: {
+    environment: 'jsdom',
+  },
   resolve: {
     // alias: {
     //   '@craftjs/core': path.resolve(__dirname, './src/vendor/craft-core.ts'),

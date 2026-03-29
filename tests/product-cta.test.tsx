@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock(
+vi.mock(
   '@craftjs/core',
   () => ({
     useNode: () => ({
@@ -13,7 +14,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock('../src/components/selectors/Text', () => ({
+vi.mock('../src/components/selectors/Text', () => ({
   Text: Object.assign(({ text }: { text?: string }) => <span>{text}</span>, {
     craft: {
       props: {
@@ -23,12 +24,16 @@ jest.mock('../src/components/selectors/Text', () => ({
   }),
 }));
 
-jest.mock('../src/components/selectors/Button/ButtonSettings', () => ({
+vi.mock('../src/components/selectors/Button/ButtonSettings', () => ({
   ButtonSettings: () => null,
 }));
 
 import { ProductCta } from '../src/components/selectors/ProductCta';
 import { productDetail } from '../src/data/product';
+
+afterEach(() => {
+  cleanup();
+});
 
 const renderProductCta = () =>
   render(

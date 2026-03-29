@@ -13,6 +13,20 @@ import {
   type DevicePreviewMode,
 } from './devicePreview';
 
+const isEditableElement = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (target.isContentEditable) {
+    return true;
+  }
+
+  const tagName = target.tagName.toLowerCase();
+
+  return tagName === 'input' || tagName === 'textarea' || tagName === 'select';
+};
+
 const HeaderDiv = styled.div`
   width: 100%;
   height: 45px;
@@ -97,6 +111,46 @@ export const Header = ({
     canUndo: query.history.canUndo(),
     canRedo: query.history.canRedo(),
   }));
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !enabled) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isEditableElement(event.target)) {
+        return;
+      }
+
+      // Mirror native editor expectations on macOS and Windows while leaving text-field undo to the browser.
+      const isUndoShortcut =
+        (event.metaKey || event.ctrlKey) &&
+        !event.shiftKey &&
+        !event.altKey &&
+        event.key.toLowerCase() === 'z';
+      const isRedoShortcut =
+        (event.metaKey || event.ctrlKey) &&
+        !event.altKey &&
+        ((event.shiftKey && event.key.toLowerCase() === 'z') ||
+          (!event.metaKey && !event.shiftKey && event.key.toLowerCase() === 'y'));
+
+      if (isUndoShortcut && canUndo) {
+        event.preventDefault();
+        actions.history.undo();
+      }
+
+      if (isRedoShortcut && canRedo) {
+        event.preventDefault();
+        actions.history.redo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [actions, canRedo, canUndo, enabled]);
 
   return (
     <HeaderDiv className="header text-white transition w-full">

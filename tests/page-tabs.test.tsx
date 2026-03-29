@@ -1,7 +1,6 @@
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
 import React from 'react';
 import { MessageChannel } from 'worker_threads';
+import { describe, expect, it } from 'vitest';
 
 import { PageTabs } from '../src/components/editor/Viewport/PageTabs';
 import { SitePage } from '../src/utils/preview';
@@ -46,16 +45,16 @@ describe('PageTabs', () => {
       />
     );
 
-    assert.match(html, /Home/);
-    assert.match(html, /Product/);
-    assert.doesNotMatch(html, />home</);
-    assert.doesNotMatch(html, /Rename/);
-    assert.doesNotMatch(html, /Move Left/);
-    assert.doesNotMatch(html, /Move Right/);
-    assert.doesNotMatch(html, /New Page/);
-    assert.doesNotMatch(html, /New Detail Page/);
-    assert.doesNotMatch(html, /Duplicate/);
-    assert.doesNotMatch(html, /Delete/);
+    expect(html).toMatch(/Home/);
+    expect(html).toMatch(/Product/);
+    expect(html).not.toMatch(/>home</);
+    expect(html).not.toMatch(/Rename/);
+    expect(html).not.toMatch(/Move Left/);
+    expect(html).not.toMatch(/Move Right/);
+    expect(html).not.toMatch(/New Page/);
+    expect(html).not.toMatch(/New Detail Page/);
+    expect(html).not.toMatch(/Duplicate/);
+    expect(html).not.toMatch(/Delete/);
   });
 
   it('does not render any management controls for the fixed product tab', () => {
@@ -67,9 +66,9 @@ describe('PageTabs', () => {
       />
     );
 
-    assert.doesNotMatch(html, /Rename/);
-    assert.doesNotMatch(html, /Move Left/);
-    assert.doesNotMatch(html, /Move Right/);
-    assert.doesNotMatch(html, />product</);
+    expect(html).not.toMatch(/Rename/);
+    expect(html).not.toMatch(/Move Left/);
+    expect(html).not.toMatch(/Move Right/);
+    expect(html).not.toMatch(/>product</);
   });
 });

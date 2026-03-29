@@ -11,6 +11,8 @@
 - `src/App.tsx` now acts as a lightweight pathname router that resolves `/`, `/editor`, and `/preview/:slug` into the editor shell or a page-specific read-only preview.
 - `src/lib/editor-config.tsx` is the shared source of truth for Craft's resolver map, MUI theme, the default landing-page node tree, the case-detail starter tree, and the blank page fallback tree used when a saved page has no persisted frame data.
 - `src/lib/editor-config.tsx` now also defines the fixed product-detail starter tree that seeds the editor's permanent `Product` tab.
+- The product-detail tree now includes a hero support panel, a three-item trust strip, and richer static section copy while still binding only the canonical product fields from `src/data/product.ts`.
+- The product hero is now intentionally split into `product-copy-intro`, `product-copy-meta`, `product-action-group`, and `product-hero-support` on the left, with a single `product-media-frame` on the right that owns the badge, hero image, caption, and price card.
 - `src/data/product.ts` is the canonical product data source and provides the helper that reapplies product-bound fields onto saved Craft node JSON before editor/preview render.
 - `src/data/landing.ts` retrofits saved legacy Home-page node trees with the responsive landing class contract so old localStorage drafts still react to the editor's viewport shell.
 - `src/data/product.ts` also upgrades legacy product CTA nodes from `Button` to `ProductCta` during hydration so old saved product pages gain the modal without reauthoring.
@@ -30,6 +32,7 @@
 - SVG icons live under `src/assets/icons` because Vite can only turn source assets into React components through SVGR.
 - Detail-page illustration assets under `src/assets/images` must be imported with `?url`; plain `*.svg` imports resolve to React components in this example's Vite setup.
 - `vite.config.ts` uses `base: '/examples/react/'` so the built example can be hosted under the examples path.
+- `vite.config.ts` also sets `test.environment = 'jsdom'` because the product CTA regression test renders real DOM through Testing Library.
 - Tailwind only provides utility styling; styled-components still owns most editor chrome and overlay styling.
 - Route helpers in `src/utils/preview.ts` must always respect `import.meta.env.BASE_URL`, otherwise `/editor` and `/preview/:slug` work in dev but break when the example is hosted under `/examples/react/`.
 - The fixed product page is previewed through `/preview/product`, not through a separate standalone route.
@@ -46,11 +49,16 @@
 - Previously saved extra pages are still switchable and previewable, but the editor header no longer exposes inline rename or reorder controls for any page.
 - Preview now reads the saved site document, not transient in-memory editor state, so page-switch and finish-edit flows must commit pending drafts before navigation.
 - Product-bound fields are marked on Craft node props and rehydrated from `src/data/product.ts`; if product preview stops updating after a data change, inspect that binding helper before debugging layout code.
+- Product hero/support/trust merchandising text is intentionally static template copy, not part of `ProductDetail`; only the marked fields stay synchronized with the product data source.
 - The product modal is intentionally local UI state only: it should never be persisted into site storage, and `Confirm` currently only closes the dialog instead of following `ctaHref`.
+- Product page polish now depends heavily on the `product-*` class contract in `src/styles/app.css`: the asymmetric highlight grid, floating media badge, trust strip, and spec-card treatment are all CSS-driven rather than schema-driven.
+- The trust strip is now styled as one continuous summary bar rather than three isolated cards, and section headings use `product-section-heading-main` plus `product-section-intro` to keep the lower half aligned with the denser hero rhythm.
 - Corrupted site documents or unknown preview slugs should surface the explicit unavailable preview state instead of falling back to a different saved page.
 - Detail-page responsiveness is intentionally driven by a small set of CSS classes in `src/styles/app.css` rather than expanding the Container schema with breakpoint props; those classes are part of the template contract.
 - Home-page responsiveness now follows the same pattern: the landing template and `src/data/landing.ts` share `landing-*` class names, so Home viewport bugs should be debugged in template markup, landing hydration, and `src/styles/app.css` together.
 - The Home root no longer applies its own `800px` max-width; `landing-page-root` stays `width: 100%` and `landing-page-shell` now inherits width from the editor's device preview shell, while Product and Detail still keep their dedicated width shells.
 - Product-detail responsiveness is also class-driven in `src/styles/app.css`, but it uses a separate `product-*` namespace so the fixed product template can change without affecting the legacy case-detail template.
+- Product-related tests now rely on `@testing-library/react` plus `jsdom`; if CTA regressions stop running, inspect `package.json`, `vite.config.ts`, and `tests/product-cta.test.tsx` together before changing the component.
 - The editor header now includes device preview toggles and the viewport wraps the Craft frame in a fixed-width shell, so responsive checks should be debugged through `devicePreview.ts`, `Header.tsx`, `Viewport/index.tsx`, and the `.viewport-canvas-*` styles together.
+- `src/components/editor/Viewport/Header.tsx` now owns editor-wide history shortcuts: `Meta/Ctrl+Z` undoes, `Meta+Shift+Z` and `Ctrl+Y` redo, and those handlers must ignore focused text inputs / selects / contenteditable targets so inline text editing keeps native browser undo.
 - The editor sidebar is now strictly workspace UI; the previous Carbon Ads footer script and its global `#carbonads` styling were removed and should not be reintroduced when adjusting sidebar layout.
