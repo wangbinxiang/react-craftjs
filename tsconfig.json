@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "esnext",
     "useDefineForClassFields": true,
@@ -13,12 +13,11 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"],
-    "paths": {
-      "@craftjs/core": ["./src/vendor/craft-core.ts"],
-      "@craftjs/layers": ["../../packages/layers/src/index.tsx"],
-      "@craftjs/utils": ["../../packages/utils/src/index.ts"]
-    }
+    "types": [
+      "vite/client"
+    ],
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

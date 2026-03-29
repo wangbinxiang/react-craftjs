@@ -14,7 +14,7 @@
 - `src/data/product.ts` is the canonical product data source and provides the helper that reapplies product-bound fields onto saved Craft node JSON before editor/preview render.
 - `src/data/product.ts` also upgrades legacy product CTA nodes from `Button` to `ProductCta` during hydration so old saved product pages gain the modal without reauthoring.
 - `src/components/editor/*` renders the editor shell: viewport, header, toolbox, sidebar, layers, toolbar, and node overlay.
-- `src/components/editor/Viewport/PageTabs.tsx` owns the top-level page switching and existing-page management controls for rename and reorder; it no longer exposes new-page, new-detail-page, duplicate, or delete actions, and it hides rename controls for the fixed `Product` page.
+- `src/components/editor/Viewport/PageTabs.tsx` now renders only the top-level page switching tabs; the secondary management strip for slug display, rename, and reorder was removed from the editor header.
 - `src/components/selectors/*` defines the editable user components and their move-in / move-out rules; the custom `Image` selector is now part of the default toolbox and resolver map.
 - `src/components/selectors/ProductCta/index.tsx` is the product-only CTA selector that opens the purchase confirmation modal in both editor and preview while still attaching the Craft connector to the trigger button.
 - `src/pages/EditorPage.tsx` now manages a site document with `pages[]`, `pageOrder[]`, and `currentPageId`, commits the active page draft before page switches / preview opens / finish-edit transitions, remounts the current Craft editor per page to avoid cross-page render warnings, and injects live product data into the fixed `Product` page before render.
@@ -40,7 +40,7 @@
 - The example still posts `LANDING_PAGE_LOADED` to `window.parent` to preserve parity with the original landing integration.
 - The initial site document seeds a single `Home` page whose `frameData` uses a landing sentinel value, so untouched home pages still render the original demo tree after reload.
 - The initial site document now also seeds a fixed `Product` page whose sentinel resolves to the product-detail Craft template.
-- Previously saved extra pages are still switchable, renameable, reorderable, and previewable even though the UI can no longer create or delete them; the fixed `Product` page is the exception and should not be renameable.
+- Previously saved extra pages are still switchable and previewable, but the editor header no longer exposes inline rename or reorder controls for any page.
 - Preview now reads the saved site document, not transient in-memory editor state, so page-switch and finish-edit flows must commit pending drafts before navigation.
 - Product-bound fields are marked on Craft node props and rehydrated from `src/data/product.ts`; if product preview stops updating after a data change, inspect that binding helper before debugging layout code.
 - The product modal is intentionally local UI state only: it should never be persisted into site storage, and `Confirm` currently only closes the dialog instead of following `ctaHref`.

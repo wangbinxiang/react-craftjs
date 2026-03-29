@@ -9,9 +9,9 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@craftjs/core": "workspace:^",
-    "@craftjs/layers": "workspace:^",
-    "@craftjs/utils": "workspace:^",
+    "@craftjs/core": "^0.2.12",
+    "@craftjs/layers": "^0.2.7",
+    "@craftjs/utils": "^0.2.5",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.3",

@@ -16,7 +16,6 @@ import {
   SitePage,
   buildExamplePath,
   createInitialSiteDocument,
-  generateUniqueSlug,
   readSiteDocument,
   resolvePageFrameSource,
   shouldPersistPreviewFrame,
@@ -42,31 +41,6 @@ const getCurrentPage = (siteDocument: SiteDocument) =>
   siteDocument.pages.find((page) => page.id === siteDocument.currentPageId) ??
   getOrderedPages(siteDocument)[0] ??
   null;
-
-const movePageOrder = (
-  pageOrder: string[],
-  pageId: string,
-  direction: 'left' | 'right'
-) => {
-  const sourceIndex = pageOrder.indexOf(pageId);
-
-  if (sourceIndex === -1) {
-    return pageOrder;
-  }
-
-  const targetIndex = direction === 'left' ? sourceIndex - 1 : sourceIndex + 1;
-
-  if (targetIndex < 0 || targetIndex >= pageOrder.length) {
-    return pageOrder;
-  }
-
-  const nextOrder = [...pageOrder];
-  const [movedPageId] = nextOrder.splice(sourceIndex, 1);
-
-  nextOrder.splice(targetIndex, 0, movedPageId);
-
-  return nextOrder;
-};
 
 const PreviewPersistenceGate = ({
   onFinishEditing,
@@ -243,69 +217,6 @@ export const EditorPage = () => {
     [commitPageDraft, commitSiteDocument]
   );
 
-  const handleRenamePage = React.useCallback(
-    (pageId: string, title: string) => {
-      const trimmedTitle = title.trim();
-
-      if (!trimmedTitle) {
-        return;
-      }
-
-      const currentDocument = siteDocumentRef.current;
-      const pageToRename = currentDocument.pages.find((page) => page.id === pageId);
-
-      if (!pageToRename || pageToRename.slug === PRODUCT_PAGE_SLUG) {
-        return;
-      }
-
-      const nextSlug = generateUniqueSlug(
-        trimmedTitle,
-        currentDocument.pages
-          .filter((page) => page.id !== pageId)
-          .map((page) => page.slug)
-      );
-
-      // Renaming updates both the label users see and the preview URL users can share.
-      commitSiteDocument(
-        {
-          ...currentDocument,
-          pages: currentDocument.pages.map((page) =>
-            page.id === pageId
-              ? {
-                  ...page,
-                  title: trimmedTitle,
-                  slug: nextSlug,
-                  updatedAt: new Date().toISOString(),
-                }
-              : page
-          ),
-        },
-        true
-      );
-    },
-    [commitSiteDocument]
-  );
-
-  const handleMovePage = React.useCallback(
-    (pageId: string, direction: 'left' | 'right') => {
-      const currentDocument = siteDocumentRef.current;
-      const nextPageOrder = movePageOrder(currentDocument.pageOrder, pageId, direction);
-
-      if (nextPageOrder === currentDocument.pageOrder) {
-        return;
-      }
-
-      commitSiteDocument(
-        {
-          ...currentDocument,
-          pageOrder: nextPageOrder,
-        },
-        true
-      );
-    },
-    [commitSiteDocument]
-  );
-
   if (!currentPage) {
     return null;
   }
@@ -327,8 +238,6 @@ export const EditorPage = () => {
             <PageTabs
               currentPageId={currentPage.id}
               pages={orderedPages}
-              onMovePage={handleMovePage}
-              onRenamePage={handleRenamePage}
               onSelectPage={handleSelectPage}
             />
           }
