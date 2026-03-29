@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "paths": {
+      "@craftjs/core": ["./src/vendor/craft-core.ts"],
+      "@craftjs/layers": ["../../packages/layers/src/index.tsx"],
+      "@craftjs/utils": ["../../packages/utils/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}
