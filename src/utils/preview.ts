@@ -213,9 +213,9 @@ const ensureFixedProductPage = (siteDocument: SiteDocument): SiteDocument => {
       pages: siteDocument.pages.map((page) =>
         page.slug === PRODUCT_PAGE_SLUG
           ? {
-              ...page,
-              title: PRODUCT_PAGE_TITLE,
-            }
+            ...page,
+            title: PRODUCT_PAGE_TITLE,
+          }
           : page
       ),
     };
@@ -387,6 +387,7 @@ export const writeSiteDocument = (
   storageKey = SITE_STORAGE_KEY
 ) => {
   try {
+    console.log('siteDocument:', siteDocument);
     storage?.setItem(storageKey, JSON.stringify(siteDocument));
   } catch {
     // Ignore quota or privacy-mode failures so editing still works without persistence.
