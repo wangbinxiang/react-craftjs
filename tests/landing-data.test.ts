@@ -28,7 +28,7 @@ const legacyLandingNodes = JSON.stringify({
   'intro-heading': {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: {},
+    props: { height: '100%' },
     custom: { displayName: 'Heading' },
     displayName: 'Container',
     parent: 'intro',
@@ -39,7 +39,7 @@ const legacyLandingNodes = JSON.stringify({
   'intro-description': {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: {},
+    props: { height: '100%' },
     custom: { displayName: 'Description' },
     displayName: 'Container',
     parent: 'intro',
@@ -83,7 +83,7 @@ const legacyLandingNodes = JSON.stringify({
   'feature-content': {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: {},
+    props: { height: '100%' },
     custom: { displayName: 'Content' },
     displayName: 'Container',
     parent: 'feature-wrapper',
@@ -127,7 +127,7 @@ const legacyLandingNodes = JSON.stringify({
   left: {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: {},
+    props: { height: '100%' },
     custom: { displayName: 'Left' },
     displayName: 'Container',
     parent: 'programmatic-content',
@@ -138,7 +138,7 @@ const legacyLandingNodes = JSON.stringify({
   right: {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: {},
+    props: { height: '100%' },
     custom: { displayName: 'Right' },
     displayName: 'Container',
     parent: 'programmatic-content',
@@ -161,6 +161,11 @@ describe('landing layout hydration', () => {
     expect(hydrated['programmatic-content'].props.className).toContain(
       'landing-programmatic-grid'
     );
+    expect(hydrated['intro-heading'].props.height).toBe('auto');
+    expect(hydrated['intro-description'].props.height).toBe('auto');
+    expect(hydrated['feature-content'].props.height).toBe('auto');
+    expect(hydrated.left.props.height).toBe('auto');
+    expect(hydrated.right.props.height).toBe('auto');
   });
 
   it('leaves non-landing serialized trees untouched', () => {

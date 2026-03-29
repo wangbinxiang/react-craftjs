@@ -59,6 +59,19 @@ const addNodeClassName = (node: SerializedNodeLike, nextClassName: string) => {
   node.props.className = appendClassName(node.props.className, nextClassName);
 };
 
+const setNodeProp = (
+  node: SerializedNodeLike,
+  propName: string,
+  propValue: unknown
+) => {
+  if (!node.props) {
+    return;
+  }
+
+  // Legacy landing saves need the same mobile-safe sizing defaults as the new template tree.
+  node.props[propName] = propValue;
+};
+
 const isLegacyLandingTree = (nodes: SerializedNodesLike) => {
   const rootNode = nodes.ROOT;
 
@@ -104,11 +117,15 @@ export const applyLandingLayoutToSerializedNodes = (frameData: string) => {
       }
 
       if (nodeName === 'Heading' && parentName === 'Introduction') {
+        // The intro heading stacks above body copy on mobile, so it must shrink to its own content height.
+        setNodeProp(node, 'height', 'auto');
         addNodeClassName(node, 'landing-intro-heading');
         return;
       }
 
       if (nodeName === 'Description' && parentName === 'Introduction') {
+        // Prevent the body copy column from inheriting a stretched desktop height when the layout collapses.
+        setNodeProp(node, 'height', 'auto');
         addNodeClassName(node, 'landing-intro-copy');
         return;
       }
@@ -129,6 +146,8 @@ export const applyLandingLayoutToSerializedNodes = (frameData: string) => {
       }
 
       if (nodeName === 'Content' && parentName === 'Wrapper') {
+        // The dark feature copy becomes a normal stacked block on phones, so its height must be content-driven.
+        setNodeProp(node, 'height', 'auto');
         addNodeClassName(node, 'landing-dark-copy');
         return;
       }
@@ -149,11 +168,15 @@ export const applyLandingLayoutToSerializedNodes = (frameData: string) => {
       }
 
       if (nodeName === 'Left') {
+        // Programmatic columns also collapse into a single column on mobile and should not retain stretched heights.
+        setNodeProp(node, 'height', 'auto');
         addNodeClassName(node, 'landing-programmatic-left');
         return;
       }
 
       if (nodeName === 'Right') {
+        // Keep the right column content-driven so stacked cards close up naturally on narrow screens.
+        setNodeProp(node, 'height', 'auto');
         addNodeClassName(node, 'landing-programmatic-right');
       }
     });

@@ -48,4 +48,18 @@ describe('editor device preview wiring', () => {
     expect(appStylesSource).toContain('.landing-two-column');
     expect(appStylesSource).not.toContain('max-width: 800px');
   });
+
+  it('maps mobile editor preview mode to the same responsive layout rules as a narrow viewport', () => {
+    const appStylesSource = readWorkspaceFile('src/styles/app.css');
+
+    expect(appStylesSource).toContain(
+      ".viewport-canvas-shell[data-device-mode='mobile'] .landing-two-column"
+    );
+    expect(appStylesSource).toContain(
+      ".viewport-canvas-shell[data-device-mode='mobile'] .landing-page-root"
+    );
+    expect(appStylesSource).toContain(
+      ".viewport-canvas-shell[data-device-mode='mobile'] .detail-hero-grid"
+    );
+  });
 });

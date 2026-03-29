@@ -62,7 +62,7 @@ export const PreviewPage = ({ slug }: PreviewPageProps) => {
     return (
       <div className="min-h-screen bg-renderer-gray">
         <div className="mx-auto flex min-h-screen max-w-[900px] flex-col px-4 py-6">
-          <div className="mb-6 flex items-center justify-between rounded bg-[#d4d4d4] px-5 py-3">
+          <div className="mb-6 flex flex-col gap-3 rounded bg-[#d4d4d4] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
                 Preview
@@ -98,7 +98,7 @@ export const PreviewPage = ({ slug }: PreviewPageProps) => {
   return (
     <div className="min-h-screen bg-renderer-gray">
       <div className="mx-auto flex min-h-screen max-w-[1200px] flex-col px-4 py-6">
-        <div className="mb-6 flex items-center justify-between rounded bg-[#d4d4d4] px-5 py-3">
+        <div className="mb-6 flex flex-col gap-3 rounded bg-[#d4d4d4] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
               Preview
@@ -107,7 +107,7 @@ export const PreviewPage = ({ slug }: PreviewPageProps) => {
               {currentPage.title}
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 sm:justify-end">
             <a
               className={cx(
                 'rounded bg-primary px-4 py-2 text-sm font-medium text-white transition hover:opacity-90'

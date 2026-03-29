@@ -256,7 +256,8 @@ export const createDefaultLandingPage = () => (
         is={Container}
         className="landing-intro-heading"
         width="40%"
-        height="100%"
+        // The intro heading becomes a top block on mobile, so its height should come from its content.
+        height="auto"
         padding={['0', '20', '0', '20']}
         custom={{ displayName: 'Heading' }}
       >
@@ -271,7 +272,8 @@ export const createDefaultLandingPage = () => (
         is={Container}
         className="landing-intro-copy"
         width="60%"
-        height="100%"
+        // Matching the heading container keeps the stacked mobile intro from reserving empty vertical space.
+        height="auto"
         padding={['0', '20', '0', '20']}
         custom={{ displayName: 'Description' }}
       >
@@ -367,7 +369,8 @@ export const createDefaultLandingPage = () => (
           padding={['0', '0', '0', '20']}
           flexDirection="column"
           width="55%"
-          height="100%"
+          // The dark copy sits below the visual block on mobile, so it should size itself from text content.
+          height="auto"
           fillSpace="yes"
           custom={{ displayName: 'Content' }}
         >
@@ -441,6 +444,8 @@ export const createDefaultLandingPage = () => (
           padding={['0', '20', '0', '0']}
           flexDirection="row"
           width="45%"
+          // The left programmatic demo becomes a standalone card in the mobile stack.
+          height="auto"
           custom={{ displayName: 'Left' }}
         >
           <Custom1
@@ -460,6 +465,8 @@ export const createDefaultLandingPage = () => (
           padding={['0', '0', '0', '20']}
           flexDirection="column"
           width="55%"
+          // The right column also collapses into stacked content and must not inherit a fixed desktop height.
+          height="auto"
           custom={{ displayName: 'Right' }}
         >
           <Custom2
