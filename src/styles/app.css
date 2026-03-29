@@ -18,6 +18,38 @@ body {
 
 @tailwind utilities;
 
+.viewport-canvas-area {
+  min-width: max-content;
+  padding: 0 24px 48px;
+}
+
+.viewport-canvas-shell {
+  max-width: none;
+  margin: 0 auto;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+  transition: width 220ms ease, box-shadow 220ms ease;
+}
+
+.landing-page-root {
+  width: 100%;
+}
+
+.landing-page-shell {
+  margin: 0 auto;
+}
+
+.landing-two-column {
+  gap: 24px;
+}
+
+.landing-square {
+  max-width: 350px;
+}
+
+.landing-page-root img {
+  max-width: 100%;
+}
+
 .detail-page-root {
   overflow-x: clip;
 }
@@ -79,6 +111,27 @@ body {
 }
 
 @media (max-width: 960px) {
+  .landing-two-column {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .landing-intro-heading,
+  .landing-intro-copy,
+  .landing-dark-copy,
+  .landing-programmatic-left,
+  .landing-programmatic-right,
+  .landing-square {
+    width: 100% !important;
+  }
+
+  .landing-dark-copy,
+  .landing-programmatic-left,
+  .landing-programmatic-right {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .detail-hero-grid,
   .detail-chapter,
   .detail-chapter-reverse,
@@ -103,6 +156,18 @@ body {
 }
 
 @media (max-width: 640px) {
+  .landing-page-root {
+    padding: 24px !important;
+  }
+
+  .landing-section {
+    padding: 24px !important;
+  }
+
+  .landing-square {
+    height: 220px !important;
+  }
+
   .detail-page-root {
     padding-left: 12px !important;
     padding-right: 12px !important;
@@ -136,12 +201,22 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .viewport-canvas-shell {
+    transition: width 220ms ease, box-shadow 220ms ease;
+  }
+
   .detail-hero-image {
     animation: detailFloat 680ms cubic-bezier(0.19, 1, 0.22, 1) both;
   }
 
   .detail-chapter {
     animation: detailRise 520ms ease-out both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport-canvas-shell {
+    transition: none;
   }
 }
 

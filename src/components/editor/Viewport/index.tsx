@@ -5,9 +5,15 @@ import React, { useEffect } from 'react';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Toolbox } from './Toolbox';
+import {
+  DEVICE_PREVIEW_WIDTHS,
+  type DevicePreviewMode,
+} from './devicePreview';
 
 type ViewportProps = {
   children?: React.ReactNode;
+  deviceMode: DevicePreviewMode;
+  onChangeDeviceMode: (mode: DevicePreviewMode) => void;
   pageManager?: React.ReactNode;
   previewHref: string;
   onOpenPreview: () => void;
@@ -15,6 +21,8 @@ type ViewportProps = {
 
 export const Viewport: React.FC<ViewportProps> = ({
   children,
+  deviceMode,
+  onChangeDeviceMode,
   pageManager,
   previewHref,
   onOpenPreview,
@@ -50,6 +58,8 @@ export const Viewport: React.FC<ViewportProps> = ({
     });
   }, [setOptions]);
 
+  const deviceWidth = DEVICE_PREVIEW_WIDTHS[deviceMode];
+
   return (
     <div className="viewport">
       <div
@@ -57,7 +67,12 @@ export const Viewport: React.FC<ViewportProps> = ({
       >
         <Toolbox />
         <div className="page-container flex flex-1 h-full flex-col">
-          <Header previewHref={previewHref} onOpenPreview={onOpenPreview} />
+          <Header
+            deviceMode={deviceMode}
+            onChangeDeviceMode={onChangeDeviceMode}
+            previewHref={previewHref}
+            onOpenPreview={onOpenPreview}
+          />
           {pageManager}
           <div
             className={cx([
@@ -71,8 +86,15 @@ export const Viewport: React.FC<ViewportProps> = ({
               connectors.select(connectors.hover(ref, null), null);
             }}
           >
-            <div className="relative flex-col flex items-center pt-8">
-              {children}
+            <div className="viewport-canvas-area relative flex min-h-full justify-center pt-8">
+              <div
+                className="viewport-canvas-shell"
+                data-device-mode={deviceMode}
+                style={{ width: `${deviceWidth}px` }}
+              >
+                {/* Keep a stable fixed-width shell so CSS breakpoints react to real layout width instead of zoom tricks. */}
+                <div className="relative flex flex-col">{children}</div>
+              </div>
             </div>
           </div>
         </div>

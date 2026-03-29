@@ -12,12 +12,15 @@
 - `src/lib/editor-config.tsx` is the shared source of truth for Craft's resolver map, MUI theme, the default landing-page node tree, the case-detail starter tree, and the blank page fallback tree used when a saved page has no persisted frame data.
 - `src/lib/editor-config.tsx` now also defines the fixed product-detail starter tree that seeds the editor's permanent `Product` tab.
 - `src/data/product.ts` is the canonical product data source and provides the helper that reapplies product-bound fields onto saved Craft node JSON before editor/preview render.
+- `src/data/landing.ts` retrofits saved legacy Home-page node trees with the responsive landing class contract so old localStorage drafts still react to the editor's viewport shell.
 - `src/data/product.ts` also upgrades legacy product CTA nodes from `Button` to `ProductCta` during hydration so old saved product pages gain the modal without reauthoring.
 - `src/components/editor/*` renders the editor shell: viewport, header, toolbox, sidebar, layers, toolbar, and node overlay.
+- `src/components/editor/Viewport/devicePreview.ts` is the shared contract for editor-only device preview modes and keeps the header labels aligned with the fixed canvas widths.
 - `src/components/editor/Viewport/PageTabs.tsx` now renders only the top-level page switching tabs; the secondary management strip for slug display, rename, and reorder was removed from the editor header.
 - `src/components/selectors/*` defines the editable user components and their move-in / move-out rules; the custom `Image` selector is now part of the default toolbox and resolver map.
 - `src/components/selectors/ProductCta/index.tsx` is the product-only CTA selector that opens the purchase confirmation modal in both editor and preview while still attaching the Craft connector to the trigger button.
 - `src/pages/EditorPage.tsx` now manages a site document with `pages[]`, `pageOrder[]`, and `currentPageId`, commits the active page draft before page switches / preview opens / finish-edit transitions, remounts the current Craft editor per page to avoid cross-page render warnings, and injects live product data into the fixed `Product` page before render.
+- `src/pages/EditorPage.tsx` also owns the transient `desktop / tablet / mobile` preview mode for the editor shell; that preference is session-only and never persists into the saved site document.
 - `src/pages/PreviewPage.tsx` resolves the target page by `slug`, renders that page's saved draft into a read-only `Editor` + `Frame` pair, and shows an explicit unavailable state when the slug is missing or unsaved.
 - `src/pages/PreviewPage.tsx` uses the same product-data injection path as the editor so `/preview/product` reflects source-of-truth data without forcing users to resave layout.
 - `src/utils/preview.ts` owns landing/detail/product template sentinel values, route helpers, site-document storage, and the shared `resolvePageFrameSource()` helper so editor and preview keep matching fallback behavior.
@@ -46,5 +49,8 @@
 - The product modal is intentionally local UI state only: it should never be persisted into site storage, and `Confirm` currently only closes the dialog instead of following `ctaHref`.
 - Corrupted site documents or unknown preview slugs should surface the explicit unavailable preview state instead of falling back to a different saved page.
 - Detail-page responsiveness is intentionally driven by a small set of CSS classes in `src/styles/app.css` rather than expanding the Container schema with breakpoint props; those classes are part of the template contract.
+- Home-page responsiveness now follows the same pattern: the landing template and `src/data/landing.ts` share `landing-*` class names, so Home viewport bugs should be debugged in template markup, landing hydration, and `src/styles/app.css` together.
+- The Home root no longer applies its own `800px` max-width; `landing-page-root` stays `width: 100%` and `landing-page-shell` now inherits width from the editor's device preview shell, while Product and Detail still keep their dedicated width shells.
 - Product-detail responsiveness is also class-driven in `src/styles/app.css`, but it uses a separate `product-*` namespace so the fixed product template can change without affecting the legacy case-detail template.
+- The editor header now includes device preview toggles and the viewport wraps the Craft frame in a fixed-width shell, so responsive checks should be debugged through `devicePreview.ts`, `Header.tsx`, `Viewport/index.tsx`, and the `.viewport-canvas-*` styles together.
 - The editor sidebar is now strictly workspace UI; the previous Carbon Ads footer script and its global `#carbonads` styling were removed and should not be reintroduced when adjusting sidebar layout.

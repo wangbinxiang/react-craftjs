@@ -232,7 +232,8 @@ export const createDefaultLandingPage = () => (
   <Element
     canvas
     is={Container}
-    width="800px"
+    className="landing-page-root landing-page-shell"
+    width="100%"
     height="auto"
     background={{ r: 255, g: 255, b: 255, a: 1 }}
     padding={['40', '40', '40', '40']}
@@ -242,6 +243,7 @@ export const createDefaultLandingPage = () => (
     <Element
       canvas
       is={Container}
+      className="landing-section landing-two-column landing-intro"
       flexDirection="row"
       width="100%"
       height="auto"
@@ -252,6 +254,7 @@ export const createDefaultLandingPage = () => (
       <Element
         canvas
         is={Container}
+        className="landing-intro-heading"
         width="40%"
         height="100%"
         padding={['0', '20', '0', '20']}
@@ -266,6 +269,7 @@ export const createDefaultLandingPage = () => (
       <Element
         canvas
         is={Container}
+        className="landing-intro-copy"
         width="60%"
         height="100%"
         padding={['0', '20', '0', '20']}
@@ -283,6 +287,7 @@ export const createDefaultLandingPage = () => (
     <Element
       canvas
       is={Container}
+      className="landing-section landing-dark-section"
       background={{ r: 39, g: 41, b: 41, a: 1 }}
       flexDirection="column"
       width="100%"
@@ -295,6 +300,7 @@ export const createDefaultLandingPage = () => (
         canvas
         background={{ r: 76, g: 78, b: 78, a: 0 }}
         is={Container}
+        className="landing-two-column landing-feature-row"
         flexDirection="row"
         margin={['0', '0', '0', '0']}
         width="100%"
@@ -306,6 +312,7 @@ export const createDefaultLandingPage = () => (
           canvas
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           is={Container}
+          className="landing-square"
           alignItems="center"
           padding={['0', '0', '0', '0']}
           flexDirection="row"
@@ -356,6 +363,7 @@ export const createDefaultLandingPage = () => (
           canvas
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           is={Container}
+          className="landing-dark-copy"
           padding={['0', '0', '0', '20']}
           flexDirection="column"
           width="55%"
@@ -383,6 +391,7 @@ export const createDefaultLandingPage = () => (
     <Element
       canvas
       is={Container}
+      className="landing-section landing-programmatic"
       background={{ r: 234, g: 245, b: 245, a: 1 }}
       flexDirection="column"
       width="100%"
@@ -395,6 +404,7 @@ export const createDefaultLandingPage = () => (
         canvas
         background={{ r: 76, g: 78, b: 78, a: 0 }}
         is={Container}
+        className="landing-programmatic-heading"
         flexDirection="column"
         margin={['0', '0', '20', '0']}
         width="100%"
@@ -416,6 +426,7 @@ export const createDefaultLandingPage = () => (
         canvas
         background={{ r: 76, g: 78, b: 78, a: 0 }}
         is={Container}
+        className="landing-two-column landing-programmatic-grid"
         flexDirection="row"
         margin={['30', '0', '0', '0']}
         width="100%"
@@ -426,6 +437,7 @@ export const createDefaultLandingPage = () => (
           canvas
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           is={Container}
+          className="landing-programmatic-left"
           padding={['0', '20', '0', '0']}
           flexDirection="row"
           width="45%"
@@ -444,6 +456,7 @@ export const createDefaultLandingPage = () => (
           canvas
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           is={Container}
+          className="landing-programmatic-right"
           padding={['0', '0', '0', '20']}
           flexDirection="column"
           width="55%"

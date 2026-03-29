@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { describe, expect, it } from 'vitest';
+
 describe('product template wiring', () => {
   it('uses the ProductCta selector in the product template and resolver', () => {
     const editorConfigSource = fs.readFileSync(

@@ -2,6 +2,7 @@ import { Editor, Frame } from '@craftjs/core';
 import cx from 'classnames';
 import React from 'react';
 
+import { applyLandingLayoutToSerializedNodes } from '../data/landing';
 import { applyProductDataToSerializedNodes } from '../data/product';
 import {
   createBlankContentPage,
@@ -41,8 +42,10 @@ export const PreviewPage = ({ slug }: PreviewPageProps) => {
   const frameSource = resolvePageFrameSource(currentPage?.frameData ?? '');
   const frameData =
     frameSource === 'saved' && currentPage?.frameData
-      // Preview must mirror editor rendering for product pages so data-source updates appear without resaving layout.
-      ? currentPage.slug === PRODUCT_PAGE_SLUG
+      // Preview must mirror editor hydration so saved landing/product pages render with the same runtime upgrades as the editor.
+      ? currentPage.slug === 'home'
+        ? applyLandingLayoutToSerializedNodes(currentPage.frameData)
+        : currentPage.slug === PRODUCT_PAGE_SLUG
         ? applyProductDataToSerializedNodes(currentPage.frameData)
         : currentPage.frameData
       : undefined;

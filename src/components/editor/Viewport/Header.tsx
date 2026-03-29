@@ -8,6 +8,10 @@ import Checkmark from '../../../assets/icons/check.svg?react';
 import Customize from '../../../assets/icons/customize.svg?react';
 import RedoSvg from '../../../assets/icons/toolbox/redo.svg?react';
 import UndoSvg from '../../../assets/icons/toolbox/undo.svg?react';
+import {
+  DEVICE_PREVIEW_OPTIONS,
+  type DevicePreviewMode,
+} from './devicePreview';
 
 const HeaderDiv = styled.div`
   width: 100%;
@@ -52,12 +56,42 @@ const Item = styled.a<{ disabled?: boolean }>`
   `}
 `;
 
+const DeviceGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 12px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.48);
+`;
+
+const DeviceButton = styled.button<{ $active: boolean }>`
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: ${(props) => (props.$active ? '#ffffff' : '#475569')};
+  background: ${(props) => (props.$active ? '#1e293b' : 'transparent')};
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
+`;
+
 type HeaderProps = {
+  deviceMode: DevicePreviewMode;
+  onChangeDeviceMode: (mode: DevicePreviewMode) => void;
   previewHref: string;
   onOpenPreview: () => void;
 };
 
-export const Header = ({ previewHref, onOpenPreview }: HeaderProps) => {
+export const Header = ({
+  deviceMode,
+  onChangeDeviceMode,
+  previewHref,
+  onOpenPreview,
+}: HeaderProps) => {
   const { enabled, canUndo, canRedo, actions } = useEditor((state, query) => ({
     enabled: state.options.enabled,
     canUndo: query.history.canUndo(),
@@ -66,7 +100,7 @@ export const Header = ({ previewHref, onOpenPreview }: HeaderProps) => {
 
   return (
     <HeaderDiv className="header text-white transition w-full">
-      <div className="items-center flex w-full px-4 justify-end">
+      <div className="items-center flex w-full px-4">
         {enabled && (
           <div className="flex-1 flex">
             <Tooltip title="Undo" placement="bottom">
@@ -81,7 +115,24 @@ export const Header = ({ previewHref, onOpenPreview }: HeaderProps) => {
             </Tooltip>
           </div>
         )}
-        <div className="flex">
+        {!enabled && <div className="flex-1" />}
+        <div className="flex items-center">
+          <DeviceGroup aria-label="Device preview mode">
+            {DEVICE_PREVIEW_OPTIONS.map((option) => (
+              <DeviceButton
+                $active={deviceMode === option.key}
+                aria-pressed={deviceMode === option.key}
+                key={option.key}
+                onClick={() => {
+                  // Device switching only changes the editor shell width and must not touch persisted page content.
+                  onChangeDeviceMode(option.key);
+                }}
+                type="button"
+              >
+                {option.label}
+              </DeviceButton>
+            ))}
+          </DeviceGroup>
           <Btn
             as="a"
             className="transition cursor-pointer bg-slate-700 mr-3"

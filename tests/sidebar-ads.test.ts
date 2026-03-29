@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { describe, expect, it } from 'vitest';
+
 describe('sidebar ad integration', () => {
   it('does not ship the Carbon Ads sidebar script or styles', () => {
     const sidebarSource = fs.readFileSync(

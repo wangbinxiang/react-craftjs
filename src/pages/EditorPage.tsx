@@ -1,7 +1,12 @@
 import { Editor, Frame, useEditor } from '@craftjs/core';
 import React from 'react';
 
+import { applyLandingLayoutToSerializedNodes } from '../data/landing';
 import { PageTabs, RenderNode, Viewport } from '../components/editor';
+import {
+  DEFAULT_DEVICE_PREVIEW_MODE,
+  type DevicePreviewMode,
+} from '../components/editor/Viewport/devicePreview';
 import { applyProductDataToSerializedNodes } from '../data/product';
 import {
   createBlankContentPage,
@@ -75,6 +80,10 @@ const createInitialDocument = () => {
 };
 
 export const EditorPage = () => {
+  // DevicePreviewMode stays limited to 'desktop' | 'tablet' | 'mobile' so the header and canvas shell share one breakpoint contract.
+  const [deviceMode, setDeviceMode] = React.useState<DevicePreviewMode>(
+    DEFAULT_DEVICE_PREVIEW_MODE
+  );
   const [siteDocument, setSiteDocument] = React.useState<SiteDocument>(
     createInitialDocument
   );
@@ -164,7 +173,11 @@ export const EditorPage = () => {
       return undefined;
     }
 
-    // Product pages keep editable layout, but product-bound fields always refresh from the shared data source.
+    // Saved home pages need the same responsive class contract as the fallback landing tree, while product pages still rebind source-of-truth content.
+    if (currentPage.slug === 'home') {
+      return applyLandingLayoutToSerializedNodes(currentPage.frameData);
+    }
+
     return currentPage.slug === PRODUCT_PAGE_SLUG
       ? applyProductDataToSerializedNodes(currentPage.frameData)
       : currentPage.frameData;
@@ -196,6 +209,13 @@ export const EditorPage = () => {
   const handleOpenPreview = React.useCallback(() => {
     commitPageDraft(currentPageIdRef.current, true);
   }, [commitPageDraft]);
+
+  const handleChangeDeviceMode = React.useCallback(
+    (nextDeviceMode: DevicePreviewMode) => {
+      setDeviceMode(nextDeviceMode);
+    },
+    []
+  );
 
   const handleSelectPage = React.useCallback(
     (pageId: string) => {
@@ -234,6 +254,7 @@ export const EditorPage = () => {
           onFinishEditing={() => commitPageDraft(currentPageIdRef.current, true)}
         />
         <Viewport
+          deviceMode={deviceMode}
           pageManager={
             <PageTabs
               currentPageId={currentPage.id}
@@ -243,6 +264,7 @@ export const EditorPage = () => {
           }
           previewHref={previewHref}
           onOpenPreview={handleOpenPreview}
+          onChangeDeviceMode={handleChangeDeviceMode}
         >
           <Frame data={currentPageFrameData}>
             {currentPageFallback}

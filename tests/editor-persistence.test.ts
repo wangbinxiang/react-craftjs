@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { shouldPersistPreviewFrame } from '../src/utils/preview';
 
 describe('editor persistence gate', () => {

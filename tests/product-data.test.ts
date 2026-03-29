@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { applyProductDataToSerializedNodes, productDetail } from '../src/data/product';
 
 const serializedNodes = JSON.stringify({
