@@ -16,8 +16,8 @@ describe('editor device preview wiring', () => {
     );
 
     expect(devicePreviewSource).toContain('PC 1440');
-    expect(devicePreviewSource).toContain('平板 1024');
-    expect(devicePreviewSource).toContain('手机 390');
+    expect(devicePreviewSource).toContain('Tablet 1024');
+    expect(devicePreviewSource).toContain('Mobile 390');
     expect(headerSource).toContain('DEVICE_PREVIEW_OPTIONS.map');
   });
 

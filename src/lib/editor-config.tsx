@@ -595,7 +595,7 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Product Copy' }}
         >
-          {/* 左列按“标题 -> 摘要规格 -> CTA -> 支撑文案”组织，减少首屏信息被大留白打散。 */}
+          {/* The left column follows "title -> spec summary -> CTA -> support copy" so the hero stays dense instead of dissolving into empty space. */}
           <Element
             canvas
             is={Container}
@@ -634,7 +634,7 @@ export const createProductDetailPage = () => (
               text={productDetail.tagline}
             />
           </Element>
-          {/* 这里直接复用规格字段做首屏摘要，不扩产品 schema，但让首屏更像完整商品页。 */}
+          {/* Reuse the spec fields for the hero summary so the page feels complete without expanding the product schema. */}
           <Element
             canvas
             is={Container}
@@ -648,7 +648,7 @@ export const createProductDetailPage = () => (
           >
             {[0, 1, 2].map((index) => createProductMetaCard(index))}
           </Element>
-          {/* CTA 和交付提示放在同一区域，保证首屏在阅读和转化上都有明确落点。 */}
+          {/* Keep the CTA and delivery note in one cluster so the hero has a clear reading path and conversion anchor. */}
           <Element
             canvas
             is={Container}
@@ -749,7 +749,7 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Product Media' }}
         >
-          {/* 右列把主图、价格和说明都收进同一个媒体框，视觉锚点会更集中。 */}
+          {/* The right column groups the hero image, price, and supporting note into one media frame to keep the visual anchor tight. */}
           <Element
             canvas
             is={Container}
@@ -974,7 +974,7 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Highlights Heading' }}
         >
-          {/* 标题区拆成主标题和辅助说明两栏，让 section 自己就能建立节奏，不再只剩大标题压着卡片。 */}
+          {/* Split the heading area into a main title block and supporting copy so the section establishes rhythm before the cards. */}
           <Element
             canvas
             is={Container}
@@ -1046,7 +1046,7 @@ export const createProductDetailPage = () => (
           background={{ r: 0, g: 0, b: 0, a: 0 }}
           custom={{ displayName: 'Specs Heading' }}
         >
-          {/* 规格区沿用同一 heading 结构，让整页从首屏到信息区保持统一的阅读网格。 */}
+          {/* Reuse the same heading structure in the specs section so the full page keeps one consistent reading grid. */}
           <Element
             canvas
             is={Container}

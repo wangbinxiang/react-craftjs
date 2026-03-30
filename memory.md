@@ -18,6 +18,7 @@
 - `src/data/product.ts` also upgrades legacy product CTA nodes from `Button` to `ProductCta` during hydration so old saved product pages gain the modal without reauthoring.
 - `src/components/editor/*` renders the editor shell: viewport, header, toolbox, sidebar, layers, toolbar, and node overlay.
 - `src/components/editor/Viewport/devicePreview.ts` is the shared contract for editor-only device preview modes and keeps the header labels aligned with the fixed canvas widths.
+- Device preview labels and key inline layout comments are standardized in English so editor UI copy, tests, and template rationale stay consistent across the workspace.
 - `src/components/editor/Viewport/PageTabs.tsx` now renders only the top-level page switching tabs; the secondary management strip for slug display, rename, and reorder was removed from the editor header.
 - `src/components/selectors/*` defines the editable user components and their move-in / move-out rules; the custom `Image` selector is now part of the default toolbox and resolver map.
 - `src/components/selectors/ProductCta/index.tsx` is the product-only CTA selector that opens the purchase confirmation modal in both editor and preview while still attaching the Craft connector to the trigger button.

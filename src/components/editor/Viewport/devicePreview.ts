@@ -6,12 +6,12 @@ export const DEVICE_PREVIEW_OPTIONS = [
   },
   {
     key: 'tablet',
-    label: '平板 1024',
+    label: 'Tablet 1024',
     width: 1024,
   },
   {
     key: 'mobile',
-    label: '手机 390',
+    label: 'Mobile 390',
     width: 390,
   },
 ] as const;
