@@ -7,7 +7,6 @@ import {
   LEGACY_PREVIEW_STORAGE_KEY,
   PRODUCT_PAGE_SLUG,
   PRODUCT_PAGE_TITLE,
-  SITE_STORAGE_KEY,
   buildExamplePath,
   createInitialSiteDocument,
   generateUniqueSlug,
@@ -17,6 +16,8 @@ import {
   resolvePageFrameSource,
   writeSiteDocument,
 } from '../src/utils/preview';
+
+import { SITE_STORAGE_KEY } from '../src/utils/siteDocument';
 
 const serializedFrameData =
   '{"ROOT":{"type":"div","props":{},"nodes":[],"linkedNodes":{},"isCanvas":true}}';

@@ -1,11 +1,11 @@
 export const LEGACY_PREVIEW_STORAGE_KEY = 'craftjs:preview-content';
-export const SITE_STORAGE_KEY = 'craftjs:site-document';
 export const SITE_DOCUMENT_VERSION = 1;
 export const DEFAULT_LANDING_PAGE_DATA = '__CRAFTJS_LANDING_PAGE__';
 export const DEFAULT_CASE_DETAIL_PAGE_DATA = '__CRAFTJS_CASE_DETAIL_PAGE__';
 export const DEFAULT_PRODUCT_PAGE_DATA = '__CRAFTJS_PRODUCT_PAGE__';
 export const PRODUCT_PAGE_TITLE = 'Product';
 export const PRODUCT_PAGE_SLUG = 'product';
+import { SITE_STORAGE_KEY } from './siteDocument';
 
 export type ExampleRoute = 'editor' | 'preview';
 export type ExampleRouteMatch = { kind: 'editor' } | { kind: 'preview'; slug: string };

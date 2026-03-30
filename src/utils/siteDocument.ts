@@ -1,0 +1,1 @@
+export const SITE_STORAGE_KEY = 'craftjs:site-document';

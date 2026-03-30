@@ -37,7 +37,7 @@
 - Tailwind only provides utility styling; styled-components still owns most editor chrome and overlay styling.
 - Route helpers in `src/utils/preview.ts` must always respect `import.meta.env.BASE_URL`, otherwise `/editor` and `/preview/:slug` work in dev but break when the example is hosted under `/examples/react/`.
 - The fixed product page is previewed through `/preview/product`, not through a separate standalone route.
-- Site persistence now lives under `SITE_STORAGE_KEY` in `src/utils/preview.ts`, with a legacy migration path from the old single-page preview key.
+- Site persistence now lives under `SITE_STORAGE_KEY` in `src/utils/siteDocument.ts`, with a legacy migration path from the old single-page preview key.
 - The editor no longer lets users add pages; retained multi-page behavior exists only to keep old saved documents editable and previewable, while hydration ensures the fixed `Product` page is always present.
 
 ## Maintenance Notes
